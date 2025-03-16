@@ -1,0 +1,106 @@
+# 基础信息
+
+|      |      |
+|------|------|
+| 编码语言 | .java |
+| 代码路径 | RuoYi-framework/ruoyi-framework/src/main/java/com/ruoyi |
+| 包名 | RuoYi-framework.ruoyi-framework.src.main.java.com.ruoyi |
+| 概述说明 | AsyncFactory实现异步任务，ShutdownManager确保资源释放，AsyncManager高效执行任务。系统通过多种服务和过滤器管理会话、权限和安全性，动态数据源和拦截器优化资源使用和数据一致性。配置类确保框架初始化，AOP和Shiro提供全面安全防护。全局异常处理器增强系统健壮性。 |
+
+# 说明
+
+AsyncFactory类通过TimerTask实现异步任务处理，具备同步会话、记录操作日志和登录信息的功能，提升系统可维护性和安全性。ShutdownManager类在销毁时关闭会话验证、异步任务和缓存管理，确保资源合理释放和系统稳定性。AsyncManager类采用单例模式，延迟10毫秒执行异步任务，提供任务执行和线程池关闭功能，确保任务高效执行和资源合理释放。动态数据源类继承自抽象路由数据源，主要负责设置默认数据源和目标数据源，并通过特定方法获取当前所使用的数据源类型，实现数据源动态切换。拦截器类SameUrlDataInterceptor通过比较请求参数和时间间隔判断是否为重复请求，有效避免用户多次提交相同数据，提高系统稳定性和数据一致性。MyBatis配置类用于设置别名包、Mapper位置和SqlSessionFactory，确保框架正确初始化和运行。Shiro配置类集成会话管理、缓存、验证码处理和过滤器设置，提供全面的安全防护基础。全局异常处理器捕获和处理各类异常，生成错误信息返回给调用方，提高系统健壮性和用户体验。LogAspect类用于记录操作日志，确保系统操作的可追踪性和安全性。DataSourceAspect类负责动态切换数据源，适用于多数据源环境。DataScopeAspect类实现数据权限过滤，灵活管理用户数据访问范围。PermissionsAspect类处理权限相关注解，确保只有具备相应权限的用户或系统能执行受保护的方法，增强系统安全性和可控性。
+
+
+### 包内部结构视图
+
+```mermaid
+graph TD
+    ruoyi --> framework
+    framework --> manager
+    framework --> shiro
+    framework --> datasource
+    framework --> interceptor
+    framework --> config
+    framework --> web
+    framework --> aspectj
+    manager --> factory
+    manager --> ShutdownManager.java
+    manager --> AsyncManager.java
+    factory --> AsyncFactory.java
+    shiro --> util
+    shiro --> rememberMe
+    shiro --> realm
+    shiro --> service
+    shiro --> session
+    shiro --> web
+    util --> AuthorizationUtils.java
+    rememberMe --> CustomCookieRememberMeManager.java
+    realm --> UserRealm.java
+    service --> SysRegisterService.java
+    service --> SysShiroService.java
+    service --> SysLoginService.java
+    service --> SysPasswordService.java
+    session --> OnlineSession.java
+    session --> OnlineSessionFactory.java
+    session --> OnlineSessionDAO.java
+    web --> filter
+    web --> CustomShiroFilterFactoryBean.java
+    web --> session
+    filter --> sync
+    filter --> LogoutFilter.java
+    filter --> captcha
+    filter --> online
+    filter --> kickout
+    sync --> SyncOnlineSessionFilter.java
+    captcha --> CaptchaValidateFilter.java
+    online --> OnlineSessionFilter.java
+    kickout --> KickoutSessionFilter.java
+    session --> OnlineWebSessionManager.java
+    session --> SpringSessionValidationScheduler.java
+    datasource --> DynamicDataSource.java
+    interceptor --> RepeatSubmitInterceptor.java
+    interceptor --> impl
+    impl --> SameUrlDataInterceptor.java
+    config --> MyBatisConfig.java
+    config --> CaptchaConfig.java
+    config --> KaptchaTextCreator.java
+    config --> I18nConfig.java
+    config --> ResourcesConfig.java
+    config --> properties
+    config --> FilterConfig.java
+    config --> DruidConfig.java
+    config --> ApplicationConfig.java
+    config --> ShiroConfig.java
+    properties --> PermitAllUrlProperties.java
+    properties --> DruidProperties.java
+    web --> service
+    web --> domain
+    web --> exception
+    service --> PermissionService.java
+    service --> ConfigService.java
+    service --> CacheService.java
+    service --> DictService.java
+    domain --> Server.java
+    domain --> server
+    server --> Mem.java
+    server --> Sys.java
+    server --> SysFile.java
+    server --> Cpu.java
+    server --> Jvm.java
+    exception --> GlobalExceptionHandler.java
+    aspectj --> LogAspect.java
+    aspectj --> DataSourceAspect.java
+    aspectj --> DataScopeAspect.java
+    aspectj --> PermissionsAspect.java
+```
+
+该流程图展示了RuoYi框架的模块结构及其层级关系。从顶层模块`ruoyi`开始，逐步展开到各个子模块，如`framework`、`shiro`、`datasource`等，并进一步细化到具体的类和文件。每个模块和文件都清晰地展示了其所属的层级关系，便于理解整个框架的组织结构。
+
+# 文件列表 File List
+
+| 名称   | 类型  | 说明 |
+|-------|------|-------------|
+| [framework](framework/_module.md) | package | AsyncFactory实现异步任务，ShutdownManager确保资源释放，AsyncManager高效执行任务。系统通过多种服务和过滤器管理会话、权限和安全性，动态数据源和拦截器优化资源使用和数据一致性。配置类确保框架初始化，AOP和Shiro提供全面安全防护。全局异常处理器增强系统健壮性。 |
+
+
